@@ -11,7 +11,7 @@ import (
 const (
 	globalScreenWidth          = 1920
 	globalScreenHeight         = 1080
-	tps                        = 10
+	tps                        = 30
 	scale                      = 4
 	alive              uint8   = 0
 	dead               uint8   = 0xff
@@ -29,13 +29,16 @@ func (g *Game) Update() error {
 	return nil
 }
 
-func runGame(state [][]bool) [][]bool {
+func runGame(state [][]bool) (newState [][]bool) {
+
 	for yi := 0; yi < len(state); yi++ {
+		line := []bool{}
 		for xi := 0; xi < len(state[yi]); xi++ {
-			state[yi][xi] = newPixelState(countLiveNeighbors(state, xi, yi), state[yi][xi])
+			line = append(line, newPixelState(countLiveNeighbors(state, xi, yi), state[yi][xi]))
 		}
+		newState = append(newState, line)
 	}
-	return state
+	return
 }
 
 func renderGame(state [][]bool, canvas *image.RGBA) {
@@ -53,7 +56,7 @@ func countLiveNeighbors(state [][]bool, x, y int) (liveNeighbors int) {
 	for yi := starty; yi < endy; yi++ {
 		endx := min(x+2, len(state[yi]))
 		for xi := startx; xi < endx; xi++ {
-			if yi == x && xi == y {
+			if yi == y && xi == x {
 				continue
 			}
 			if state[yi][xi] {
@@ -128,7 +131,7 @@ func randomFlag(width, height int) bool {
 
 func main() {
 	ebiten.SetWindowSize(globalScreenWidth, globalScreenHeight)
-	ebiten.SetWindowTitle("Hello, World!")
+	ebiten.SetWindowTitle("Hello, Conway!")
 	ebiten.SetTPS(tps)
 	if err := ebiten.RunGame(&Game{canvas: image.NewRGBA(image.Rect(0, 0, globalScreenWidth, globalScreenHeight)), state: initState(globalScreenWidth/scale, globalScreenHeight/scale)}); err != nil {
 		log.Fatal(err)
