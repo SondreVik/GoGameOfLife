@@ -15,7 +15,7 @@ const (
 	scale                      = 4
 	alive              uint8   = 0
 	dead               uint8   = 0xff
-	randomPercent      float32 = 5
+	randomPercent      float32 = 50
 )
 
 type Game struct {
