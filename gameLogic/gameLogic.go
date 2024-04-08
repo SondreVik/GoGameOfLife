@@ -1,5 +1,10 @@
 package gameLogic
 
+import (
+	"GameOfLife/settings"
+	"math/rand"
+)
+
 func RunGame(state [][]bool) (newState [][]bool) {
 	for yi := 0; yi < len(state); yi++ {
 		line := []bool{}
@@ -9,6 +14,24 @@ func RunGame(state [][]bool) (newState [][]bool) {
 		newState = append(newState, line)
 	}
 	return
+}
+
+func InitGame(width, height int) (state [][]bool) {
+	for yi := 0; yi < height; yi++ {
+		line := []bool{}
+		for xi := 0; xi < width; xi++ {
+			line = append(line, randomFlag(width, height))
+		}
+		state = append(state, line)
+	}
+	return
+}
+
+func randomFlag(width, height int) bool {
+	percentedValue := ((settings.RandomPercent / 100) * float32(width) * float32(height))
+	modulo := rand.Int() % (width * height)
+	result := modulo < int(percentedValue)
+	return result
 }
 
 func newPixelState(liveNeighbors int, originalState bool) bool {
