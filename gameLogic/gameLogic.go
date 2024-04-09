@@ -9,7 +9,7 @@ func RunGame(state [][]bool) (newState [][]bool) {
 	for yi := 0; yi < len(state); yi++ {
 		line := []bool{}
 		for xi := 0; xi < len(state[yi]); xi++ {
-			line = append(line, newPixelState(countLiveNeighbors(state, xi, yi), state[yi][xi]))
+			line = append(line, newCellState(countLiveNeighbors(state, xi, yi), state[yi][xi]))
 		}
 		newState = append(newState, line)
 	}
@@ -34,7 +34,7 @@ func randomFlag(width, height int) bool {
 	return result
 }
 
-func newPixelState(liveNeighbors int, originalState bool) bool {
+func newCellState(liveNeighbors int, originalState bool) bool {
 	if liveNeighbors < 2 {
 		return false
 	}

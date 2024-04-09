@@ -35,7 +35,7 @@ func main() {
 	ebiten.SetTPS(settings.Tps)
 	err := ebiten.RunGame(&Game{
 		canvas: image.NewRGBA(image.Rect(0, 0, settings.GlobalScreenWidth, settings.GlobalScreenHeight)),
-		state:  gameLogic.InitGame(settings.GlobalScreenWidth/settings.Scale, settings.GlobalScreenHeight/settings.Scale)})
+		state:  gameLogic.InitGame(settings.GlobalScreenWidth/settings.CellWidth, settings.GlobalScreenHeight/settings.CellWidth)})
 	if err != nil {
 		log.Fatal(err)
 	}

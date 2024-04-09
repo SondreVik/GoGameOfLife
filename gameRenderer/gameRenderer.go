@@ -8,19 +8,19 @@ import (
 func RenderGame(state [][]bool, canvas *image.RGBA) {
 	for yi := 0; yi < len(state); yi++ {
 		for xi := 0; xi < len(state[yi]); xi++ {
-			drawPixel(canvas, xi, yi, state[yi][xi])
+			drawCell(canvas, xi, yi, state[yi][xi])
 		}
 	}
 }
 
-func drawPixel(img *image.RGBA, x, y int, active bool) *image.RGBA {
-	for yi := 0; yi < settings.Scale; yi++ {
-		for xi := 0; xi < settings.Scale; xi++ {
+func drawCell(img *image.RGBA, x, y int, active bool) *image.RGBA {
+	for yi := 0; yi < settings.CellWidth; yi++ {
+		for xi := 0; xi < settings.CellWidth; xi++ {
 			color := settings.Dead
 			if active {
 				color = settings.Alive
 			}
-			index := (4 * xi) + yi*img.Stride + y*img.Stride*settings.Scale + (x * 4 * settings.Scale)
+			index := (4 * xi) + yi*img.Stride + y*img.Stride*settings.CellWidth + (x * 4 * settings.CellWidth)
 			if img.Pix[index] == color {
 				continue
 			}
