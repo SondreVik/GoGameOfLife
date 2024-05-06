@@ -13,24 +13,19 @@ import (
 )
 
 type Game struct {
-	state       [][]bool
-	canvas      *image.RGBA
-	input       *gameInput.Input
-	gameStarted bool
+	state         [][]bool
+	canvas        *image.RGBA
+	input         *gameInput.Input
+	isGameRunning bool
 }
 
 func (g *Game) Update() error {
-	if g.gameStarted {
+	var input = g.input.Update()
+	g.isGameRunning = input.SimInProgress
+	g.state = drawLogic.UpdateState(g.state, input)
+	if g.isGameRunning {
 		g.state = gameLogic.RunGame(g.state)
-	} else {
-		var input = g.input.Update()
-		if input.RPressed {
-			g.gameStarted = true
-		} else {
-			g.state = drawLogic.UpdateState(g.state, input)
-		}
 	}
-
 	gameRenderer.RenderGame(g.state, g.canvas)
 	return nil
 }

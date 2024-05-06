@@ -2,19 +2,19 @@ package gameInput
 
 import "github.com/hajimehoshi/ebiten/v2"
 
-type mouseState int
+type keyState int
 
 const (
-	MouseNone mouseState = iota
-	MouseDown
-	MouseUp
+	KeyNone keyState = iota
+	KeyDown
+	KeyUp
 )
 
 type Input struct {
-	MouseState mouseState
-	MousePosX  int
-	MousePosY  int
-	RPressed   bool
+	MouseState    keyState
+	MousePosX     int
+	MousePosY     int
+	SimInProgress bool
 }
 
 func NewInput() *Input {
@@ -23,22 +23,22 @@ func NewInput() *Input {
 
 func (i *Input) Update() *Input {
 	switch i.MouseState {
-	case MouseNone:
+	case KeyNone:
 		if ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft) {
-			i.MouseState = MouseDown
+			i.MouseState = KeyDown
 		}
-	case MouseDown:
+	case KeyDown:
 		if !ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft) {
 			x, y := ebiten.CursorPosition()
 			i.MousePosX = x
 			i.MousePosY = y
-			i.MouseState = MouseUp
+			i.MouseState = KeyUp
 		}
-	case MouseUp:
-		i.MouseState = MouseNone
+	case KeyUp:
+		i.MouseState = KeyNone
 	}
-	if ebiten.IsKeyPressed(ebiten.KeyR) {
-		i.RPressed = true
+	if ebiten.IsKeyPressed(ebiten.KeySpace) {
+		i.SimInProgress = !i.SimInProgress
 	}
 	return i
 }
