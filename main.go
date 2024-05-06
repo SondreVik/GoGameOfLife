@@ -1,6 +1,8 @@
 package main
 
 import (
+	"GameOfLife/drawLogic"
+	"GameOfLife/gameInput"
 	"GameOfLife/gameLogic"
 	"GameOfLife/gameRenderer"
 	"GameOfLife/settings"
@@ -11,12 +13,19 @@ import (
 )
 
 type Game struct {
-	state  [][]bool
-	canvas *image.RGBA
+	state       [][]bool
+	canvas      *image.RGBA
+	input       *gameInput.Input
+	gameStarted bool
 }
 
 func (g *Game) Update() error {
-	g.state = gameLogic.RunGame(g.state)
+	if g.gameStarted {
+		g.state = gameLogic.RunGame(g.state)
+	} else {
+		g.state = drawLogic.UpdateState(g.state, g.input.Update())
+	}
+
 	gameRenderer.RenderGame(g.state, g.canvas)
 	return nil
 }
@@ -35,7 +44,9 @@ func main() {
 	ebiten.SetTPS(settings.Tps)
 	err := ebiten.RunGame(&Game{
 		canvas: image.NewRGBA(image.Rect(0, 0, settings.GlobalScreenWidth, settings.GlobalScreenHeight)),
-		state:  gameLogic.InitGame(settings.GlobalScreenWidth/settings.CellWidth, settings.GlobalScreenHeight/settings.CellWidth)})
+		state:  gameLogic.InitBlankGame(settings.GlobalScreenWidth/settings.CellWidth, settings.GlobalScreenHeight/settings.CellWidth),
+		input:  gameInput.NewInput()})
+	// state:  gameLogic.InitGame(settings.GlobalScreenWidth/settings.CellWidth, settings.GlobalScreenHeight/settings.CellWidth)})
 	if err != nil {
 		log.Fatal(err)
 	}
