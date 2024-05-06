@@ -27,6 +27,17 @@ func InitGame(width, height int) (state [][]bool) {
 	return
 }
 
+func InitBlankGame(width, height int) (state [][]bool) {
+	for yi := 0; yi < height; yi++ {
+		line := []bool{}
+		for xi := 0; xi < width; xi++ {
+			line = append(line, false)
+		}
+		state = append(state, line)
+	}
+	return
+}
+
 func randomFlag(width, height int) bool {
 	percentedValue := ((settings.RandomPercent / 100) * float32(width) * float32(height))
 	modulo := rand.Int() % (width * height)
