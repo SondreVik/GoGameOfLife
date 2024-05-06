@@ -14,6 +14,7 @@ type Input struct {
 	MouseState mouseState
 	MousePosX  int
 	MousePosY  int
+	RPressed   bool
 }
 
 func NewInput() *Input {
@@ -35,6 +36,9 @@ func (i *Input) Update() *Input {
 		}
 	case MouseUp:
 		i.MouseState = MouseNone
+	}
+	if ebiten.IsKeyPressed(ebiten.KeyR) {
+		i.RPressed = true
 	}
 	return i
 }

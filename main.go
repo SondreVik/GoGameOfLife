@@ -23,7 +23,12 @@ func (g *Game) Update() error {
 	if g.gameStarted {
 		g.state = gameLogic.RunGame(g.state)
 	} else {
-		g.state = drawLogic.UpdateState(g.state, g.input.Update())
+		var input = g.input.Update()
+		if input.RPressed {
+			g.gameStarted = true
+		} else {
+			g.state = drawLogic.UpdateState(g.state, input)
+		}
 	}
 
 	gameRenderer.RenderGame(g.state, g.canvas)
@@ -45,8 +50,8 @@ func main() {
 	err := ebiten.RunGame(&Game{
 		canvas: image.NewRGBA(image.Rect(0, 0, settings.GlobalScreenWidth, settings.GlobalScreenHeight)),
 		state:  gameLogic.InitBlankGame(settings.GlobalScreenWidth/settings.CellWidth, settings.GlobalScreenHeight/settings.CellWidth),
-		input:  gameInput.NewInput()})
-	// state:  gameLogic.InitGame(settings.GlobalScreenWidth/settings.CellWidth, settings.GlobalScreenHeight/settings.CellWidth)})
+		// state:  gameLogic.InitGame(settings.GlobalScreenWidth/settings.CellWidth, settings.GlobalScreenHeight/settings.CellWidth),
+		input: gameInput.NewInput()})
 	if err != nil {
 		log.Fatal(err)
 	}
