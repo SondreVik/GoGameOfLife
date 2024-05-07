@@ -6,10 +6,15 @@ import (
 	"GameOfLife/gameLogic"
 	"GameOfLife/gameRenderer"
 	"GameOfLife/settings"
+	"flag"
 	"image"
 	"log"
 
 	"github.com/hajimehoshi/ebiten/v2"
+)
+
+var (
+	randFlag bool
 )
 
 type Game struct {
@@ -42,11 +47,22 @@ func main() {
 	ebiten.SetWindowSize(settings.GlobalScreenWidth, settings.GlobalScreenHeight)
 	ebiten.SetWindowTitle("Hello, Conway!")
 	ebiten.SetTPS(settings.Tps)
+	flag.BoolVar(&randFlag, "r", false, "if set, the game will start with random")
+	flag.Parse()
+	var initialGameState [][]bool
+	gameStarted := false
+	if randFlag {
+		initialGameState = gameLogic.InitGame(settings.GlobalScreenWidth/settings.CellWidth, settings.GlobalScreenHeight/settings.CellWidth)
+		gameStarted = true
+	} else {
+		initialGameState = gameLogic.InitBlankGame(settings.GlobalScreenWidth/settings.CellWidth, settings.GlobalScreenHeight/settings.CellWidth)
+	}
 	err := ebiten.RunGame(&Game{
-		canvas: image.NewRGBA(image.Rect(0, 0, settings.GlobalScreenWidth, settings.GlobalScreenHeight)),
-		state:  gameLogic.InitBlankGame(settings.GlobalScreenWidth/settings.CellWidth, settings.GlobalScreenHeight/settings.CellWidth),
-		// state:  gameLogic.InitGame(settings.GlobalScreenWidth/settings.CellWidth, settings.GlobalScreenHeight/settings.CellWidth),
-		input: gameInput.NewInput()})
+		canvas:        image.NewRGBA(image.Rect(0, 0, settings.GlobalScreenWidth, settings.GlobalScreenHeight)),
+		state:         initialGameState,
+		input:         gameInput.NewInput(gameStarted),
+		isGameRunning: gameStarted,
+	})
 	if err != nil {
 		log.Fatal(err)
 	}

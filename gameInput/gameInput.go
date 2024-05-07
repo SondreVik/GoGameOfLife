@@ -17,8 +17,8 @@ type Input struct {
 	SimInProgress bool
 }
 
-func NewInput() *Input {
-	return &Input{}
+func NewInput(simInProgress bool) *Input {
+	return &Input{SimInProgress: simInProgress}
 }
 
 func (i *Input) Update() *Input {
