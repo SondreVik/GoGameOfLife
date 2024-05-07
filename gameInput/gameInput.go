@@ -28,13 +28,16 @@ func (i *Input) Update() *Input {
 	switch i.MouseState {
 	case KeyNone:
 		if ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft) {
-			i.MouseState = KeyDown
-		}
-	case KeyDown:
-		if !ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft) {
 			x, y := ebiten.CursorPosition()
 			i.MousePosX = x
 			i.MousePosY = y
+			i.MouseState = KeyDown
+		}
+	case KeyDown:
+		x, y := ebiten.CursorPosition()
+		i.MousePosX = x
+		i.MousePosY = y
+		if !ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft) {
 			i.MouseState = KeyUp
 		}
 	case KeyUp:

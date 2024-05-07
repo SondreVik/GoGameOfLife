@@ -6,11 +6,17 @@ import (
 )
 
 func UpdateState(state [][]bool, input *gameInput.Input) [][]bool {
-	if input.MouseState != gameInput.KeyUp {
+	if input.MouseState == gameInput.KeyNone {
 		return state
 	}
 	x := utils.NormalizeLength(input.MousePosX)
 	y := utils.NormalizeLength(input.MousePosY)
-	state[y][x] = !state[y][x]
+	if y > len(state) {
+		return state
+	}
+	if x > len(state[0]) {
+		return state
+	}
+	state[y][x] = true
 	return state
 }

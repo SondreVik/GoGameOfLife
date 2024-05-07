@@ -24,15 +24,28 @@ type Game struct {
 	isGameRunning bool
 }
 
+var count int
+
 func (g *Game) Update() error {
+
 	var input = g.input.Update()
 	g.isGameRunning = input.SimInProgress
 	g.state = drawLogic.UpdateState(g.state, input)
-	if g.isGameRunning {
+	if g.isGameRunning && shouldRunGofTick() {
 		g.state = gameLogic.RunGame(g.state)
 	}
 	gameRenderer.RenderGame(g.state, g.canvas)
 	return nil
+}
+
+func shouldRunGofTick() bool {
+	factor := settings.Tps / settings.GofTps
+	if count == factor {
+		count = 1
+		return true
+	}
+	count++
+	return false
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
