@@ -1,6 +1,8 @@
 package gameInput
 
-import "github.com/hajimehoshi/ebiten/v2"
+import (
+	"github.com/hajimehoshi/ebiten/v2"
+)
 
 type keyState int
 
@@ -11,10 +13,11 @@ const (
 )
 
 type Input struct {
-	MouseState    keyState
-	MousePosX     int
-	MousePosY     int
-	SimInProgress bool
+	MouseState         keyState
+	MousePosX          int
+	MousePosY          int
+	SimInProgress      bool
+	SimInProgressState keyState
 }
 
 func NewInput(simInProgress bool) *Input {
@@ -37,8 +40,16 @@ func (i *Input) Update() *Input {
 	case KeyUp:
 		i.MouseState = KeyNone
 	}
-	if ebiten.IsKeyPressed(ebiten.KeySpace) {
-		i.SimInProgress = !i.SimInProgress
+	switch i.SimInProgressState {
+	case KeyNone:
+		if ebiten.IsKeyPressed(ebiten.KeySpace) {
+			i.SimInProgress = !i.SimInProgress
+			i.SimInProgressState = KeyDown
+		}
+	case KeyDown:
+		if !ebiten.IsKeyPressed(ebiten.KeySpace) {
+			i.SimInProgressState = KeyNone
+		}
 	}
 	return i
 }
