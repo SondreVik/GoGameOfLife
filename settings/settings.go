@@ -7,4 +7,4 @@ var GlobalScreenWidth = 1920
 var GlobalScreenHeight = 1080
 var Tps = 120
 var RandomPercent float32 = 50
-var GofTps = 30
+var GofTps = 20
