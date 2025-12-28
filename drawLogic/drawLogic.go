@@ -12,12 +12,10 @@ func UpdateState(state [][]bool, input *gameInput.Input) [][]bool {
 	centerX := utils.NormalizeLength(input.MousePosX)
 	centerY := utils.NormalizeLength(input.MousePosY)
 	
-	// Calculate the brush area based on brush size
-	brushRadius := input.BrushSize / 2
-	
-	// Draw cells in a square around the center point
-	for dy := -brushRadius; dy <= brushRadius; dy++ {
-		for dx := -brushRadius; dx <= brushRadius; dx++ {
+	// Draw cells in a square pattern based on brush size
+	// For brush size N, we draw an NxN square with the top-left corner at the mouse position
+	for dy := 0; dy < input.BrushSize; dy++ {
+		for dx := 0; dx < input.BrushSize; dx++ {
 			x := centerX + dx
 			y := centerY + dy
 			

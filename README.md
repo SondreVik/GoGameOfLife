@@ -3,7 +3,7 @@ An implementation of game of life written in go
 
 ## Getting Started
 
-To start run 
+To start, run the command
 `go mod tidy`
 and then
 `go run main.go`
