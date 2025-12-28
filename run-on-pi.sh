@@ -13,7 +13,7 @@ docker run --rm \
   --user $(id -u):$(id -g) \
   --device /dev/dri \
   --name go-game-of-life \
-  sondreevik/go-arm-app:latest
+  sondreevik/go-game-of-life:latest
 
 # Revoke X11 access after container exits
 xhost -local:docker

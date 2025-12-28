@@ -18,10 +18,10 @@ if ($LASTEXITCODE -ne 0) {
 
 # Pull the latest image
 Write-Host "Pulling latest image..." -ForegroundColor Cyan
-docker pull sondreevik/go-arm-app:latest
+docker pull sondreevik/go-game-of-life:latest
 
 # Run the container through WSL to get proper display support
 Write-Host "Running Game of Life through WSL..." -ForegroundColor Cyan
-wsl -e bash -c 'xhost +local:docker 2>/dev/null; docker run --rm -e DISPLAY=:0 -v /tmp/.X11-unix:/tmp/.X11-unix:rw -v /mnt/wslg:/mnt/wslg --user $(id -u):$(id -g) sondreevik/go-arm-app:latest; xhost -local:docker 2>/dev/null'
+wsl -e bash -c 'xhost +local:docker 2>/dev/null; docker run --rm -e DISPLAY=:0 -v /tmp/.X11-unix:/tmp/.X11-unix:rw -v /mnt/wslg:/mnt/wslg --user $(id -u):$(id -g) sondreevik/go-game-of-life:latest; xhost -local:docker 2>/dev/null'
 
 Write-Host "Game closed." -ForegroundColor Green

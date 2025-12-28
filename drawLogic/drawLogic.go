@@ -11,12 +11,15 @@ func UpdateState(state [][]bool, input *gameInput.Input) [][]bool {
 	}
 	x := utils.NormalizeLength(input.MousePosX)
 	y := utils.NormalizeLength(input.MousePosY)
-	if y > len(state) {
+	
+	// Check for valid indices (including negative values)
+	if y < 0 || y >= len(state) {
 		return state
 	}
-	if x > len(state[0]) {
+	if x < 0 || x >= len(state[0]) {
 		return state
 	}
+	
 	state[y][x] = true
 	return state
 }
