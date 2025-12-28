@@ -9,17 +9,29 @@ func UpdateState(state [][]bool, input *gameInput.Input) [][]bool {
 	if input.MouseState == gameInput.KeyNone {
 		return state
 	}
-	x := utils.NormalizeLength(input.MousePosX)
-	y := utils.NormalizeLength(input.MousePosY)
+	centerX := utils.NormalizeLength(input.MousePosX)
+	centerY := utils.NormalizeLength(input.MousePosY)
 	
-	// Check for valid indices (including negative values)
-	if y < 0 || y >= len(state) {
-		return state
-	}
-	if x < 0 || x >= len(state[0]) {
-		return state
+	// Calculate the brush area based on brush size
+	brushRadius := input.BrushSize / 2
+	
+	// Draw cells in a square around the center point
+	for dy := -brushRadius; dy <= brushRadius; dy++ {
+		for dx := -brushRadius; dx <= brushRadius; dx++ {
+			x := centerX + dx
+			y := centerY + dy
+			
+			// Check for valid indices
+			if y < 0 || y >= len(state) {
+				continue
+			}
+			if x < 0 || x >= len(state[0]) {
+				continue
+			}
+			
+			state[y][x] = true
+		}
 	}
 	
-	state[y][x] = true
 	return state
 }
