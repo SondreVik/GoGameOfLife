@@ -46,6 +46,15 @@ func (i *Input) Update() *Input {
 	case KeyUp:
 		i.MouseState = KeyNone
 	}
+
+	// Mouse wheel for brush size
+	_, wheelY := ebiten.Wheel()
+	if wheelY > 0 && i.BrushSize < 10 {
+		i.BrushSize++
+	} else if wheelY < 0 && i.BrushSize > 1 {
+		i.BrushSize--
+	}
+
 	switch i.SimInProgressState {
 	case KeyNone:
 		if ebiten.IsKeyPressed(ebiten.KeySpace) {
@@ -59,27 +68,29 @@ func (i *Input) Update() *Input {
 	}
 	switch i.BrushSizeUpState {
 	case KeyNone:
-		if ebiten.IsKeyPressed(ebiten.KeyEqual) || ebiten.IsKeyPressed(ebiten.KeyKPAdd) {
+		// Use E for increase
+		if ebiten.IsKeyPressed(ebiten.KeyE) {
 			if i.BrushSize < 10 {
 				i.BrushSize++
 			}
 			i.BrushSizeUpState = KeyDown
 		}
 	case KeyDown:
-		if !ebiten.IsKeyPressed(ebiten.KeyEqual) && !ebiten.IsKeyPressed(ebiten.KeyKPAdd) {
+		if !ebiten.IsKeyPressed(ebiten.KeyE) {
 			i.BrushSizeUpState = KeyNone
 		}
 	}
 	switch i.BrushSizeDownState {
 	case KeyNone:
-		if ebiten.IsKeyPressed(ebiten.KeyMinus) || ebiten.IsKeyPressed(ebiten.KeyKPSubtract) {
+		// Use Q for decrease
+		if ebiten.IsKeyPressed(ebiten.KeyQ) {
 			if i.BrushSize > 1 {
 				i.BrushSize--
 			}
 			i.BrushSizeDownState = KeyDown
 		}
 	case KeyDown:
-		if !ebiten.IsKeyPressed(ebiten.KeyMinus) && !ebiten.IsKeyPressed(ebiten.KeyKPSubtract) {
+		if !ebiten.IsKeyPressed(ebiten.KeyQ) {
 			i.BrushSizeDownState = KeyNone
 		}
 	}

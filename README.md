@@ -12,8 +12,8 @@ and then
 
 - **Left Mouse Button**: Draw cells on the canvas
 - **Space**: Start/pause the simulation
-- **+**: Increase brush size (max: 10)
-- **-**: Decrease brush size (min: 1)
+- **Mouse Wheel Up / E**: Increase brush size (max: 10)
+- **Mouse Wheel Down / Q**: Decrease brush size (min: 1)
 
 The brush size allows you to draw multiple cells at once, making it easier to create shapes and patterns.
 
