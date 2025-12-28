@@ -9,17 +9,27 @@ func UpdateState(state [][]bool, input *gameInput.Input) [][]bool {
 	if input.MouseState == gameInput.KeyNone {
 		return state
 	}
-	x := utils.NormalizeLength(input.MousePosX)
-	y := utils.NormalizeLength(input.MousePosY)
+	startX := utils.NormalizeLength(input.MousePosX)
+	startY := utils.NormalizeLength(input.MousePosY)
 	
-	// Check for valid indices (including negative values)
-	if y < 0 || y >= len(state) {
-		return state
-	}
-	if x < 0 || x >= len(state[0]) {
-		return state
+	// Draw cells in a square pattern based on brush size
+	// For brush size N, we draw an NxN square starting from the mouse position
+	for dy := 0; dy < input.BrushSize; dy++ {
+		for dx := 0; dx < input.BrushSize; dx++ {
+			x := startX + dx
+			y := startY + dy
+			
+			// Check for valid indices
+			if y < 0 || y >= len(state) {
+				continue
+			}
+			if x < 0 || x >= len(state[0]) {
+				continue
+			}
+			
+			state[y][x] = true
+		}
 	}
 	
-	state[y][x] = true
 	return state
 }
