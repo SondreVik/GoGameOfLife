@@ -22,11 +22,11 @@ go mod download
 
 # Build the application
 echo "Building application..."
-go build -tags=ebitengl -o game-of-life .
+go build -tags=ebitengles -o game-of-life .
 
-# Run the application with legacy OpenGL (Pi compatibility)
+# Run the application with OpenGL ES (native Pi GPU)
 echo "Running Game of Life..."
-echo "Using legacy OpenGL for Raspberry Pi compatibility..."
+echo "Using OpenGL ES for Raspberry Pi GPU..."
 ./game-of-life
 
 echo "Game closed."
