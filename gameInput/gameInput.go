@@ -66,33 +66,26 @@ func (i *Input) Update() *Input {
 			i.SimInProgressState = KeyNone
 		}
 	}
-	switch i.BrushSizeUpState {
+	i.updateBrushSize(ebiten.KeyE, 1, &i.BrushSizeUpState)
+	i.updateBrushSize(ebiten.KeyQ, -1, &i.BrushSizeDownState)
+	return i
+}
+
+func (i *Input) updateBrushSize(key ebiten.Key, delta int, state *keyState) {
+	switch *state {
 	case KeyNone:
 		// Use E for increase
-		if ebiten.IsKeyPressed(ebiten.KeyE) {
-			if i.BrushSize < 10 {
+		if ebiten.IsKeyPressed(key) {
+			if i.BrushSize < 10 && delta > 0 {
 				i.BrushSize++
-			}
-			i.BrushSizeUpState = KeyDown
-		}
-	case KeyDown:
-		if !ebiten.IsKeyPressed(ebiten.KeyE) {
-			i.BrushSizeUpState = KeyNone
-		}
-	}
-	switch i.BrushSizeDownState {
-	case KeyNone:
-		// Use Q for decrease
-		if ebiten.IsKeyPressed(ebiten.KeyQ) {
-			if i.BrushSize > 1 {
+			} else if i.BrushSize > 1 && delta < 0 {
 				i.BrushSize--
 			}
-			i.BrushSizeDownState = KeyDown
+			*state = KeyDown
 		}
 	case KeyDown:
-		if !ebiten.IsKeyPressed(ebiten.KeyQ) {
-			i.BrushSizeDownState = KeyNone
+		if !ebiten.IsKeyPressed(key) {
+			*state = KeyNone
 		}
 	}
-	return i
 }
