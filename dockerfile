@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 # --- Builder Stage ---
 # Use the native platform for building (not cross-compiling)
-FROM --platform=$TARGETPLATFORM golang:alpine AS builder
+FROM golang:alpine AS builder
 
 # Install necessary build dependencies for Ebiten (requires CGO and X11)
 RUN --mount=type=cache,target=/var/cache/apk \
