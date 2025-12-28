@@ -24,8 +24,8 @@ go mod download
 echo "Building application..."
 go build -o game-of-life .
 
-# Run the application
+# Run the application with OpenGL ES (better Pi compatibility)
 echo "Running Game of Life..."
-./game-of-life
+EBITEN_GRAPHICS_LIBRARY=opengl ./game-of-life
 
 echo "Game closed."
